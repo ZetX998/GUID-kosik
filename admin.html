@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUID Kurýr - Administrace</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="app-container" style="padding: 20px;">
+        <div id="login-box" class="guide-step" style="margin-top: 40px;">
+            <h4>🔒 Admin Přihlášení</h4>
+            <p>Zadejte heslo pro správu aplikace GUID Kurýr.</p>
+            <input type="password" id="admin-pass" class="input-field" placeholder="Heslo (admin123)">
+            <button class="btn-confirm" onclick="checkAdminAuth()">Přihlásit se</button>
+        </div>
+
+        <div id="admin-dashboard" style="display: none;">
+            <header style="border-radius: 14px; margin-bottom: 16px;">
+                <div class="logo">🛠️ GUID <span>Admin</span></div>
+                <button class="btn-back" onclick="previewDraft()">👁️ Náhled</button>
+            </header>
+
+            <button id="btn-pub" class="btn-confirm" style="margin-bottom: 20px;" onclick="publishAll()">🚀 Publikovat všem</button>
+
+            <h3 style="color: var(--brand-green-bright); margin-bottom: 10px;">📩 Hlášení od kurýrů</h3>
+            <div id="admin-reports" style="margin-bottom: 24px;"></div>
+
+            <h3 style="color: var(--brand-green-bright); margin-bottom: 10px;">📝 Editor sekcí & Statistiky</h3>
+            <div id="admin-editor"></div>
+        </div>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GUID Kurýr - Znalostní Báze</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div id="lightbox-modal" onclick="closeLightbox()"><img id="lightbox-img" src=""></div>
+
+    <div id="sub-view" class="view-screen">
+        <div class="view-header">
+            <button class="btn-back" onclick="goHome()">← Zpět</button>
+            <h2 id="sub-title" style="font-size: 1.1rem; color: var(--brand-green-bright);">Témata</h2>
+            <div style="width: 50px;"></div>
+        </div>
+        <div id="sub-list-container"></div>
+    </div>
+
+    <div id="detail-view" class="view-screen">
+        <div class="view-header">
+            <button class="btn-back" onclick="backToSub()">← Zpět</button>
+            <h2 id="detail-title" style="font-size: 1rem; color: var(--brand-green-bright);">Detail</h2>
+            <button class="btn-close" onclick="goHome()">✕</button>
+        </div>
+        <div id="detail-content"></div>
+    </div>
+
+    <div id="report-view" class="view-screen">
+        <div class="view-header">
+            <button class="btn-back" onclick="goHome()">← Zpět</button>
+            <h2 style="font-size: 1.1rem; color: var(--brand-green-bright);">💬 Nahlásit chybu</h2>
+            <div style="width: 50px;"></div>
+        </div>
+        <div class="guide-step">
+            <h4>Chybí tu něco nebo je adresa špatně?</h4>
+            <p>Napište nám bez registrace. Zpráva jde přímo administrátorovi.</p>
+            <input type="text" id="rep-name" class="input-field" placeholder="Vaše jméno nebo přezdívka">
+            <textarea id="rep-msg" class="admin-textarea" placeholder="Popište, co upravit nebo doplnit..."></textarea>
+            <button class="btn-confirm" onclick="submitReport()">📩 Odeslat hlášení</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="logo" onclick="goHome()">🛒 GUID <span>Kurýr</span></div>
+            <div class="header-actions">
+                <div class="theme-switch" onclick="toggleTheme()"><div class="theme-switch-handle" id="theme-icon">🌙</div></div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <input type="text" class="search-bar" placeholder="🔍 Hledat..." oninput="handleSearch(this.value)">
+            <div class="grid-container">
+                <div class="grid-item highlight" onclick="openSubCategory('gaia_login')">
+                    <div class="icon">📲</div><h3>Start směny & GAIA</h3><p>Fialový box, palubní deska</p>
+                </div>
+                <div class="grid-item" onclick="openSubCategory('invoicing')">
+                    <div class="icon">🧾</div><h3>Inkaso & Vkladomaty</h3><p>Pravidla, mapa bankomatů</p>
+                </div>
+                <div class="grid-item" onclick="openSubCategory('customer')">
+                    <div class="icon">🚪</div><h3>U zákazníka & Desatero</h3><p>18+, občanka, chování</p>
+                </div>
+                <div class="grid-item highlight" onclick="openSubCategory('contacts')">
+                    <div class="icon">📞</div><h3>Důležité kontakty</h3><p>GAIA & WhatsApp skupiny</p>
+                </div>
+                <div class="grid-item" onclick="openReportModal()" style="grid-column: span 2; aspect-ratio: auto; padding: 16px;">
+                    <div class="icon" style="font-size: 1.6rem;">💬</div>
+                    <h3>Nahlásit chybu / Chybí v aplikaci</h3>
+                    <p>Rychlá zpráva pro admina bez registrace</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
