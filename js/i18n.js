@@ -1,63 +1,37 @@
 const translations = {
     cs: {
         title: "GUID Kurýr - Znalostní Báze",
-        searchPlaceholder: "🔍 Hledat (HW, vkladomaty, desatero, storno)...",
-        home: "Domů",
-        back: "← Zpět",
-        close: "✕",
+        searchPlaceholder: "🔍 Hledat (HW, vkladomaty, bonusy, storno)...",
         categories: {
             gaia_login: { title: "Start směny & GAIA", desc: "Fialový box, palubní deska" },
+            car_home: { title: "Auto domů", desc: "Zapůjčení vozu přes noc" },
+            shifts: { title: "Plánování směn", desc: "120h pravidlo, Semafor" },
             invoicing: { title: "Inkaso & Vkladomaty", desc: "Pravidla, mapa bankomatů" },
+            delivery: { title: "Doručování & Storna", desc: "4krokový postup, RMF" },
             customer: { title: "U zákazníka & Desatero", desc: "18+, občanka, chování" },
-            contacts: { title: "Důležité kontakty", desc: "GAIA & WhatsApp skupiny" }
+            bonuses: { title: "Bonusy & Odměny", desc: "Jak vylepšit své skóre" },
+            forms: { title: "Žádosti & Formuláře", desc: "Korekce zpoždění trasy" },
+            contacts: { title: "Kde najít kontakty", desc: "GAIA, firemní telefon, WA" }
         },
         reportBtn: "Nahlásit chybu / Chybí v aplikaci",
-        reportDesc: "Rychlá zpráva pro admina bez registrace",
-        reportTitle: "💬 Nahlásit chybu",
-        reportSub: "Chybí tu něco nebo je adresa špatně?",
-        reportDescText: "Napište nám bez registrace. Zpráva jde přímo administrátorovi.",
-        namePlaceholder: "Vaše jméno nebo přezdívka",
-        msgPlaceholder: "Popište, co upravit nebo doplnit...",
-        sendBtn: "📩 Odeslat hlášení",
-        adminLogin: "🔒 Admin Přihlášení",
-        adminLoginText: "Zadejte heslo pro správu aplikace GUID Kurýr.",
-        adminPassPlaceholder: "Heslo (admin123)",
-        loginBtn: "Přihlásit se",
-        adminTitle: "🛠️ GUID Admin",
-        previewBtn: "👁️ Náhled",
-        publishBtn: "🚀 Publikovat všem",
-        reportsTitle: "📩 Hlášení od kurýrů",
-        editorTitle: "📝 Editor sekcí & Statistiky"
+        reportDesc: "Rychlá zpráva pro admina bez registrace"
     },
     ua: {
         title: "GUID Кур'єр - База знань",
-        searchPlaceholder: "🔍 Пошук (HW, банкомати, десатеро, сторно)...",
-        home: "Головна",
-        back: "← Назад",
-        close: "✕",
+        searchPlaceholder: "🔍 Пошук (HW, банкомати, бонуси, сторно)...",
         categories: {
             gaia_login: { title: "Початок зміни & GAIA", desc: "Фіолетовий бокс, приладова панель" },
+            car_home: { title: "Авто додому", desc: "Оренда авто на ніч" },
+            shifts: { title: "Планування змін", desc: "Правило 120 год, Світлофор" },
             invoicing: { title: "Інкасо & Банкомати", desc: "Правила, мапа банкоматів" },
-            customer: { title: "У клієнта & Десатеро", desc: "18+, паспорт, правила поведінки" },
-            contacts: { title: "Важливі контакти", desc: "GAIA & WhatsApp групи" }
+            delivery: { title: "Доставка & Сторно", desc: "4 кроки перед сторно, RMF" },
+            customer: { title: "У клієнта & Десатеро", desc: "18+, паспорт, поведінка" },
+            bonuses: { title: "Бонуси & Винагороди", desc: "Як покращити свій рейтинг" },
+            forms: { title: "Заявки & Формуляри", desc: "Корекція затримки маршруту" },
+            contacts: { title: "Де знайти контакти", desc: "GAIA, робочий телефон, WA" }
         },
         reportBtn: "Повідомити про помилку / Чогось не вистачає",
-        reportDesc: "Швидке повідомлення для адміна без реєстрації",
-        reportTitle: "💬 Повідомити про помилку",
-        reportSub: "Чогось не вистачає або адреса невірна?",
-        reportDescText: "Напишіть нам без реєстрації. Повідомлення надходить безпосередньо адміністратору.",
-        namePlaceholder: "Ваше ім'я або псевдонім",
-        msgPlaceholder: "Опишіть, що потрібно виправити або додати...",
-        sendBtn: "📩 Надіслати звіт",
-        adminLogin: "🔒 Вхід для адміна",
-        adminLoginText: "Введіть пароль для керування додатком GUID Кур'єр.",
-        adminPassPlaceholder: "Пароль (admin123)",
-        loginBtn: "Увійти",
-        adminTitle: "🛠️ GUID Адмін",
-        previewBtn: "👁️ Попередній перегляд",
-        publishBtn: "🚀 Опублікувати всім",
-        reportsTitle: "📩 Звіти від кур'єрів",
-        editorTitle: "📝 Редактор розділів & Статистика"
+        reportDesc: "Швидке повідомлення для адміна без реєстрації"
     }
 };
 
@@ -66,7 +40,8 @@ let currentLang = localStorage.getItem('guid_lang') || 'cs';
 function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('guid_lang', lang);
-    document.getElementById('lang-toggle-btn').innerText = lang === 'cs' ? '🇺🇦 UA' : '🇨🇿 CZ';
+    const btn = document.getElementById('lang-toggle-btn');
+    if (btn) btn.innerText = lang === 'cs' ? '🇺🇦 UA' : '🇨🇿 CZ';
     updateTexts();
 }
 
@@ -78,9 +53,7 @@ function t(key) {
     try {
         const keys = key.split('.');
         let val = translations[currentLang];
-        for (let k of keys) {
-            val = val[k];
-        }
+        for (let k of keys) val = val[k];
         return val || key;
     } catch (e) {
         return key;
@@ -91,9 +64,8 @@ function updateTexts() {
     document.title = t('title');
     const searchInput = document.querySelector('.search-bar');
     if (searchInput) searchInput.placeholder = t('searchPlaceholder');
-    
-    // Aktualizace hlavních dlaždic
-    const catKeys = ['gaia_login', 'invoicing', 'customer', 'contacts'];
+
+    const catKeys = ['gaia_login', 'car_home', 'shifts', 'invoicing', 'delivery', 'customer', 'bonuses', 'forms', 'contacts'];
     const items = document.querySelectorAll('.grid-item:not([onclick*="openReportModal"])');
     items.forEach((item, idx) => {
         if (catKeys[idx]) {
