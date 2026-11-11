@@ -17,15 +17,15 @@
 }
 
 [data-theme="cyber"] {
-    --bg-main: #090314;
-    --bg-card: #130B26;
-    --border-color: #4C1D95;
-    --brand-green: #A855F7;
-    --brand-green-hover: #9333EA;
+    --bg-main: #0B071E;
+    --bg-card: #150E35;
+    --border-color: #22D3EE; /* Neonově azurový/tyrkysový obrys */
+    --brand-green: #22D3EE;
+    --brand-green-hover: #06B6D4;
     --text-main: #F3E8FF;
-    --text-muted: #C084FC;
+    --text-muted: #A78BFA;
     --accent-blue: #22D3EE;
-    --step-bg: #1A103C;
+    --step-bg: #1C1342;
     --warning-bg: #451A03;
     --warning-border: #D97706;
     --warning-text: #FDE68A;
@@ -64,17 +64,16 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 
 .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
 .grid-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.2s ease; position: relative; aspect-ratio: 1 / 0.95; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow: hidden; }
-.grid-item:hover { transform: translateY(-3px); border-color: var(--brand-green); }
+.grid-item:hover { transform: translateY(-3px); border-color: var(--brand-green); box-shadow: 0 0 12px rgba(34, 211, 238, 0.2); }
 .grid-item.highlight { border-color: var(--brand-green); }
 
 .grid-item .icon { font-size: 1.3rem; margin-bottom: 8px; color: var(--brand-green); display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; flex-shrink: 0; }
-[data-theme="cyber"] .grid-item .icon { background: rgba(168, 85, 247, 0.15); color: var(--brand-green); }
+[data-theme="cyber"] .grid-item .icon { background: rgba(34, 211, 238, 0.15); color: var(--brand-green); }
 .grid-item .icon::before, .grid-item .icon svg { display: none !important; }
 
 .grid-item h3 { font-size: 0.82rem; margin-bottom: 3px; color: var(--text-main); font-weight: 700; line-height: 1.15; }
 .grid-item p { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
 
-/* Akordeon / Rozbalovací témata */
 .accordion-item { background: var(--step-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
 .accordion-header { padding: 14px 16px; font-size: 0.9rem; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--step-bg); }
 .accordion-header:hover { opacity: 0.9; }
@@ -104,4 +103,4 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 
 footer { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.72rem; color: var(--text-muted); }
 footer a { color: var(--brand-green); text-decoration: underline; font-weight: 600; }
-              
+                                  
