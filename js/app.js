@@ -3,8 +3,7 @@ function getActiveDb() {
     if (custom) {
         try { 
             let parsed = JSON.parse(custom);
-            // Pokud v uložené paměti chybí ceníky, vynutíme načtení čerstvé DB
-            if (parsed && parsed.pricing_secure) {
+            if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 0) {
                 return parsed;
             }
         } catch(e) {}
@@ -22,6 +21,7 @@ function renderGrid() {
 
     grid.innerHTML = Object.keys(db).map(key => {
         const cat = db[key];
+        if (!cat) return '';
         const style = cat.span ? 'grid-column: span 2; aspect-ratio: auto; padding: 16px;' : '';
         const hlClass = cat.highlight ? 'highlight' : '';
         const lockIcon = cat.isSecure ? '<div style="position:absolute; top:8px; right:8px; font-size:0.75rem; color:#EF4444;"><i class="fa-solid fa-lock"></i></div>' : '';
@@ -142,3 +142,4 @@ window.addEventListener('DOMContentLoaded', () => {
         if (btn) btn.style.display = 'flex';
     }
 });
+                  
