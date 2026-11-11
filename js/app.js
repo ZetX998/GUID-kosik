@@ -9,7 +9,9 @@ function renderGrid() {
         const style = cat.span ? 'grid-column: span 2; aspect-ratio: auto; padding: 16px;' : '';
         const hlClass = cat.highlight ? 'highlight' : '';
         const lockIcon = cat.isSecure ? '<div style="position:absolute; top:8px; right:8px; font-size:0.75rem; color:#EF4444;"><i class="fa-solid fa-lock"></i></div>' : '';
-        const iconClass = cat.icon || 'fa-folder';
+        
+        // Zde bereme ikonu přímo z dat (žádné složky navíc)
+        const iconClass = cat.icon || 'fa-folder-open';
 
         return `
             <div class="grid-item ${hlClass}" style="${style}" onclick="openCategory('${key}')">
@@ -68,7 +70,7 @@ function showRestrictedNotice(title) {
         <div class="guide-step" style="text-align: center; padding: 30px 15px;">
             <div style="font-size: 2.5rem; color: #F59E0B; margin-bottom: 12px;"><i class="fa-solid fa-lock"></i></div>
             <h4 style="margin-bottom: 10px; justify-content: center;">Přístup omezen</h4>
-            <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">Aktuální ceník a smlouva byla zaslána na e-mail. Ceník a podrobnosti najdete také ve firemní WhatsApp skupině.</p>
+            <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">Aktuální ceník a smlouva vám byla zaslána na e-mail. Ceník a podrobnosti najdete také ve firemní WhatsApp skupině.</p>
             <button class="btn-confirm" style="width: auto; margin: 0 auto; padding: 10px 24px; display: inline-block;" onclick="openCategory('pricing_secure')">Zkusit zadat heslo znovu</button>
         </div>
     `;
@@ -126,3 +128,4 @@ window.addEventListener('DOMContentLoaded', () => {
         if (btn) btn.style.display = 'flex';
     }
 });
+    
