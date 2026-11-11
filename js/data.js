@@ -6,7 +6,7 @@ function getSafeDb() {
     return {
         "gaia_login": {
             title: "Start směny & GAIA",
-            icon: "fa-mobile-screen-button", // Moderní ikona telefonu / appky
+            icon: "fa-mobile-screen-button",
             highlight: true,
             topics: [
                 {
@@ -43,7 +43,7 @@ function getSafeDb() {
         },
         "pricing_secure": {
             title: "Ceník & Smlouvy",
-            icon: "fa-file-shield", // Moderní ikona chráněného dokumentu
+            icon: "fa-file-shield",
             highlight: true,
             isSecure: true,
             topics: [
@@ -57,7 +57,7 @@ function getSafeDb() {
         },
         "vratne_obaly": {
             title: "Stravenky & Obaly",
-            icon: "fa-ticket", // Moderní ikona poukázky / stravenky
+            icon: "fa-ticket",
             highlight: false,
             topics: [
                 {
@@ -71,7 +71,7 @@ function getSafeDb() {
         },
         "cash_management": {
             title: "Hotovost & Vkladomaty",
-            icon: "fa-wallet", // Moderní peněženka / hotovost
+            icon: "fa-wallet",
             highlight: true,
             topics: [
                 {
@@ -91,7 +91,7 @@ function getSafeDb() {
         },
         "bonus_tips": {
             title: "Bonusy & Jak je vylepšit",
-            icon: "fa-award", // Moderní trofej / ocenění
+            icon: "fa-award",
             highlight: true,
             topics: [
                 {
@@ -106,7 +106,7 @@ function getSafeDb() {
         },
         "corrections": {
             title: "Žádosti & Korekce",
-            icon: "fa-file-pen", // Formulář / pero
+            icon: "fa-file-pen",
             highlight: false,
             topics: [
                 {
@@ -121,7 +121,7 @@ function getSafeDb() {
         },
         "delivery": {
             title: "Doručování & Storna",
-            icon: "fa-box-open", // Otevřená krabice / balík
+            icon: "fa-box-open",
             highlight: false,
             topics: [
                 {
@@ -140,13 +140,13 @@ function getSafeDb() {
         },
         "car_home": {
             title: "Auto domů",
-            icon: "fa-car-side", // Moderní auto z boku
+            icon: "fa-car-side",
             highlight: false,
             topics: [
                 {
                     name: "Pravidla a žádosti",
                     steps: [
-                        { title: "1. Ponechání HW na další den", text: "Pokud máte další den směnu začínající nejpozději v **8:40** and dnes máte odpolední/celodenní směnu, můžete si nechat set HW u sebe.\n\n📱 **Kde zadat:** GAIA ➔ Menu ➔ Rychlé akce ➔ Zapůjčení auta (napište číslo terminálu a region, např. 531, Praha).", images: [] },
+                        { title: "1. Ponechání HW na další den", text: "Pokud máte další den směnu začínající nejpozději v **8:40** a dnes máte odpolední/celodenní směnu, můžete si nechat set HW u sebe.\n\n📱 **Kde zadat:** GAIA ➔ Menu ➔ Rychlé akce ➔ Zapůjčení auta (napište číslo terminálu a region, např. 531, Praha).", images: [] },
                         { title: "2. Cesta domů po posledním zákazníkovi", text: "Podmínky: schválené auto domů do 15:00, odevzdávání po 22:00, v autě žádné zboží.\n\n📱 **Postup:** GAIA ➔ Menu ➔ Rychlé akce ➔ Ostatní ➔ vybrat **Vysoká urgence** ➔ do poznámky napsat **„Domů“**.", images: [] }
                     ]
                 }
@@ -154,7 +154,7 @@ function getSafeDb() {
         },
         "contacts": {
             title: "Kde najít kontakty",
-            icon: "fa-address-book", // Moderní adresář / kontakty
+            icon: "fa-address-book",
             highlight: false,
             span: true,
             topics: [
