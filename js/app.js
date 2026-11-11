@@ -1,158 +1,128 @@
-let db = getSafeDb();
-let currentCatKey = '';
-
-// Živý poslech změn z Firebase
-if (firestoreDb) {
-    firestoreDb.collection("guid_data").doc("main").onSnapshot((doc) => {
-        if (doc.exists && doc.data().content) {
-            db = doc.data().content;
-            localStorage.setItem('guid_db_custom', JSON.stringify(db));
-        }
-    }, (err) => console.warn("Offline režim:", err));
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('guid_theme') === 'light') {
-        document.body.classList.add('light-theme');
-        document.getElementById('theme-icon').innerText = '☀️';
+    renderMainGrid();
+    // Pokud je uživatel v náhledu z adminu, ukážeme tlačítko zpět
+    if (localStorage.getItem('guid_db_custom')) {
+        const btnReturn = document.getElementById('btn-return-admin');
+        if (btnReturn) btnReturn.style.display = 'flex';
     }
 });
 
-function toggleTheme() {
-    document.body.classList.toggle('light-theme');
-    const isLight = document.body.classList.contains('light-theme');
-    document.getElementById('theme-icon').innerText = isLight ? '☀️' : '🌙';
-    localStorage.setItem('guid_theme', isLight ? 'light' : 'dark');
-}
+function renderMainGrid() {
+    const grid = document.getElementById('main-grid');
+    if (!grid) return;
 
-// Počítání zobrazení sekce (na pozadí, bez zpomalení)
-function trackView(catKey) {
-    try {
-        let stats = JSON.parse(localStorage.getItem('guid_stats') || '{}');
-        stats[catKey] = (stats[catKey] || 0) + 1;
-        localStorage.setItem('guid_stats', JSON.stringify(stats));
+    let stats = JSON.parse(localStorage.getItem('guid_stats') || '{}');
 
-        if (firestoreDb) {
-            firestoreDb.collection("guid_stats").doc(catKey).set({
-                views: firebase.firestore.FieldValue.increment(1)
-            }, { merge: true }).catch(() => {});
-        }
-    } catch (e) {}
-}
-
-function openSubCategory(key) {
-    currentCatKey = key;
-    trackView(key);
-    const data = db[key];
-    if (!data) return;
-
-    document.getElementById('sub-title').innerText = data.title;
-    const container = document.getElementById('sub-list-container');
-    container.innerHTML = data.topics.map(t => `
-        <div class="sub-list-item" onclick="openDetail('${t.id}')">
-            <h4>${sanitizeText(t.name)}</h4>
-            <span>›</span>
-        </div>
-    `).join('');
-    document.getElementById('sub-view').style.display = 'block';
-}
-
-function openDetail(topicId) {
-    const data = db[currentCatKey];
-    const topic = data.topics.find(t => t.id === topicId);
-    if (!topic) return;
-
-    document.getElementById('detail-title').innerText = topic.name;
-    const container = document.getElementById('detail-content');
-    
-    container.innerHTML = topic.steps.map(s => {
-        let imgHtml = '';
-        if (s.images && s.images.length > 0) {
-            const cls = s.imgLayout === 'grid' ? 'img-container-grid' : 'img-container-vertical';
-            imgHtml = `<div class="${cls}">` + 
-                s.images.map(img => `<img src="${sanitizeText(img)}" class="guide-img" onclick="openLightbox('${sanitizeText(img)}')" onerror="this.style.display='none'">`).join('') + 
-                `</div>`;
-        }
+    grid.innerHTML = Object.keys(db).map(key => {
+        const cat = db[key];
+        const views = stats[key] || 0;
+        const style = cat.span ? 'grid-column: span 2; aspect-ratio: auto; padding: 14px;' : '';
+        const hlClass = cat.highlight ? 'highlight' : '';
         return `
-            <div class="guide-step">
-                <h4>📌 ${sanitizeText(s.title)}</h4>
-                <p>${sanitizeText(s.text)}</p>
-                ${imgHtml}
+            <div class="grid-item ${hlClass}" style="${style}" onclick="openCategory('${key}')">
+                <div style="position:absolute; top:8px; right:8px; font-size:0.65rem; color:var(--text-secondary);">👁️ ${views}</div>
+                <div class="icon"><i class="fa-solid ${cat.icon || 'fa-folder'}"></i></div>
+                <h3>${cat.title}</h3>
+                <p>Zobrazit návody</p>
             </div>
         `;
     }).join('');
-
-    document.getElementById('sub-view').style.display = 'none';
-    document.getElementById('detail-view').style.display = 'block';
 }
 
-function backToSub() {
-    document.getElementById('detail-view').style.display = 'none';
-    document.getElementById('sub-view').style.display = 'block';
-}
+function openCategory(catKey) {
+    const cat = db[catKey];
+    if (!cat) return;
 
-function goHome() {
-    document.getElementById('sub-view').style.display = 'none';
-    document.getElementById('detail-view').style.display = 'none';
-    document.getElementById('report-view').style.display = 'none';
-}
+    // Přičtení zobrazení
+    let stats = JSON.parse(localStorage.getItem('guid_stats') || '{}');
+    stats[catKey] = (stats[catKey] || 0) + 1;
+    localStorage.setItem('guid_stats', JSON.stringify(stats));
 
-function openLightbox(src) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox-modal').style.display = 'flex';
-}
-function closeLightbox() {
-    document.getElementById('lightbox-modal').style.display = 'none';
-}
+    document.getElementById('modal-category-title').innerText = cat.title;
+    const body = document.getElementById('modal-body');
 
-function handleSearch(query) {
-    const q = query.toLowerCase().trim();
-    document.querySelectorAll('.grid-item').forEach(item => {
-        item.style.display = item.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
+    let html = '';
+
+    // Pokud je sekce zabezpečená (ceník), vložíme kontrolu hesla
+    if (cat.isSecure) {
+        html += `
+            <div class="guide-step" style="border-color: rgba(16, 185, 129, 0.4); margin-bottom: 20px;">
+                <h4><i class="fa-solid fa-lock"></i> Zabezpečená sekce</h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">Pro zobrazení interního ceníku zadejte tajný kód.</p>
+                <div style="display:flex; gap:8px;">
+                    <input type="password" id="secure-pass-input" class="input-field" placeholder="Zadejte kód" style="margin:0;">
+                    <button class="btn-confirm" style="width:120px; margin:0;" onclick="verifySecureSection('${catKey}')">Ověřit</button>
+                </div>
+                <p id="secure-error" style="color:#EF4444; font-size:0.75rem; margin-top:6px; display:none;"><i class="fa-solid fa-triangle-exclamation"></i> Nesprávný kód!</p>
+                <p id="secure-success" style="color:var(--brand-green-bright); font-size:0.75rem; margin-top:6px; display:none;"><i class="fa-solid fa-circle-check"></i> Kód správně, sekce odemčena!</p>
+            </div>
+            <div id="secure-content-box" style="display:none;">
+        `;
+    }
+
+    cat.topics.forEach(top => {
+        html += `<h3 style="color:var(--brand-green-bright); margin:18px 0 10px 0; font-size:0.95rem;">${top.name}</h3>`;
+        top.steps.forEach(step => {
+            html += `
+                <div class="guide-step">
+                    <h4 style="font-size:0.9rem; margin-bottom:6px; color:#fff;">${step.title}</h4>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; white-space: pre-wrap;">${step.text}</p>
+                </div>
+            `;
+        });
     });
+
+    if (cat.isSecure) {
+        html += `</div>`;
+    }
+
+    body.innerHTML = html;
+    document.getElementById('content-modal').style.display = 'block';
 }
 
-// Hlášení chyb s ochranou proti spamu (60s limit)
-function openReportModal() {
-    document.getElementById('report-view').style.display = 'block';
+function verifySecureSection(catKey) {
+    const input = document.getElementById('secure-pass-input');
+    const err = document.getElementById('secure-error');
+    const succ = document.getElementById('secure-success');
+    const box = document.getElementById('secure-content-box');
+
+    if (input && input.value.trim() === 'admin123') {
+        err.style.display = 'none';
+        succ.style.display = 'block';
+        box.style.display = 'block';
+    } else {
+        err.style.display = 'block';
+        succ.style.display = 'none';
+        box.style.display = 'none';
+    }
 }
 
-async function submitReport() {
-    const lastSent = localStorage.getItem('guid_last_report');
-    if (lastSent && (Date.now() - parseInt(lastSent)) < 60000) {
-        alert('⏳ Počkejte prosím minutu před odesláním dalšího hlášení (ochrana proti spamu).');
+function closeContentModal() {
+    document.getElementById('content-modal').style.display = 'none';
+}
+
+function openSupportModal() { document.getElementById('support-modal').style.display = 'block'; }
+function closeSupportModal() { document.getElementById('support-modal').style.display = 'none'; }
+function openLegalModal() { document.getElementById('legal-modal').style.display = 'block'; }
+function closeLegalModal() { document.getElementById('legal-modal').style.display = 'none'; }
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text);
+    alert('✅ Zkopírováno do schránky: ' + text);
+}
+
+function submitReport() {
+    const name = document.getElementById('report-name').value.trim() || 'Anonym';
+    const message = document.getElementById('report-msg').value.trim();
+    if (!message) {
+        alert('⚠️ Vyplňte prosím text hlášení.');
         return;
     }
 
-    const name = document.getElementById('rep-name').value.trim();
-    const msg = document.getElementById('rep-msg').value.trim();
-    if (!name || !msg) {
-        alert('Vyplňte prosím jméno i zprávu.');
-        return;
-    }
+    let reports = JSON.parse(localStorage.getItem('guid_reports') || '[]');
+    reports.push({ name, message, date: new Date().toLocaleString('cs-CZ') });
+    localStorage.setItem('guid_reports', JSON.stringify(reports));
 
-    const reportObj = {
-        id: 'rep_' + Date.now(),
-        name: sanitizeText(name),
-        message: sanitizeText(msg),
-        date: new Date().toLocaleString('cs-CZ'),
-        resolved: false
-    };
-
-    try {
-        let reports = JSON.parse(localStorage.getItem('guid_reports') || '[]');
-        reports.unshift(reportObj);
-        localStorage.setItem('guid_reports', JSON.stringify(reports));
-        localStorage.setItem('guid_last_report', Date.now().toString());
-
-        if (firestoreDb) {
-            await firestoreDb.collection("guid_reports").doc(reportObj.id).set(reportObj);
-        }
-
-        alert('✅ Děkujeme! Hlášení bylo odesláno.');
-        document.getElementById('rep-msg').value = '';
-        goHome();
-    } catch (e) {
-        alert('⚠️ Chyba při odesílání. Zkuste to prosím znovu.');
-    }
+    document.getElementById('report-msg').value = '';
+    alert('✅ Hlášení bylo úspěšně odesláno do administrace!');
 }
