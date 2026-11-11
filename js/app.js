@@ -1,3 +1,12 @@
+const SECURE_PASSWORD_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 function getActiveDb() {
     let custom = localStorage.getItem('guid_db_custom');
     if (custom) {
@@ -16,8 +25,6 @@ let db = getActiveDb();
 function renderGrid() {
     const grid = document.getElementById('main-grid');
     if (!grid) return;
-
-    let stats = JSON.parse(localStorage.getItem('guid_stats') || '{}');
 
     grid.innerHTML = Object.keys(db).map(key => {
         const cat = db[key];
@@ -73,7 +80,6 @@ function openCategory(catKey) {
             `;
         }
 
-        // Vykreslení otevíracích seznamů (akordeonů) pro témata
         contentHtml += cat.topics.map((top, tIdx) => `
             <div class="accordion-item" id="acc-${tIdx}">
                 <div class="accordion-header" onclick="toggleAccordion(${tIdx})">
@@ -104,15 +110,16 @@ function openCategory(catKey) {
 
 function toggleAccordion(tIdx) {
     const el = document.getElementById(`acc-${tIdx}`);
-    if (el) {
-        el.classList.toggle('active');
-    }
+    if (el) el.classList.toggle('active');
 }
 
-function verifySecureAccess() {
+async function verifySecureAccess() {
     const input = document.getElementById('secure-pass-input');
     if (!input) return;
-    if (input.value.trim() === 'admin123') {
+    
+    const typedHash = await sha256(input.value.trim());
+
+    if (typedHash === SECURE_PASSWORD_HASH) {
         localStorage.setItem('guid_secure_unlocked', 'true');
         openCategory('pricing_secure');
     } else {
@@ -155,7 +162,6 @@ function copyToClipboard(text) {
     });
 }
 
-// Ochrana proti spamu: report max 1x za minutu
 function submitReport() {
     const name = document.getElementById('report-name').value.trim();
     const msg = document.getElementById('report-msg').value.trim();
@@ -189,9 +195,5 @@ function submitReport() {
 
 window.addEventListener('DOMContentLoaded', () => {
     renderGrid();
-    if (localStorage.getItem('guid_admin_logged') === 'true') {
-        const btn = document.getElementById('btn-return-admin');
-        if (btn) btn.style.display = 'flex';
-    }
 });
-                                       
+                            
