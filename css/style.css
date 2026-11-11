@@ -30,12 +30,14 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 .btn-top-action:hover { background: #E2E8F0; border-color: #CBD5E1; }
 
 .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-.grid-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; position: relative; aspect-ratio: 1 / 0.95; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+.grid-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 10px; text-align: center; cursor: pointer; transition: all 0.2s ease; position: relative; aspect-ratio: 1 / 0.95; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.01); overflow: hidden; }
 .grid-item:hover { transform: translateY(-3px); box-shadow: 0 10px 20px -3px rgba(0,0,0,0.06); border-color: var(--brand-green); }
 .grid-item.highlight { border-color: #A7F3D0; background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%); }
-.grid-item .icon { font-size: 1.6rem; margin-bottom: 10px; color: var(--brand-green); display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: #F0FDF4; border-radius: 50%; }
-.grid-item h3 { font-size: 0.88rem; margin-bottom: 4px; color: var(--text-main); font-weight: 700; line-height: 1.2; }
-.grid-item p { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
+
+/* Opraveno: Čisté vykreslení ikony, žádné přetékání ani složky */
+.grid-item .icon { font-size: 1.5rem; margin-bottom: 8px; color: var(--brand-green); display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: #F0FDF4; border-radius: 50%; flex-shrink: 0; }
+.grid-item h3 { font-size: 0.82rem; margin-bottom: 3px; color: var(--text-main); font-weight: 700; line-height: 1.15; }
+.grid-item p { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
 
 .guide-step { background: #F8FAFC; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
 .guide-step h4 { color: var(--brand-green); font-size: 0.95rem; margin-bottom: 8px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
