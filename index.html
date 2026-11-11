@@ -3,116 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GUID Kurýr - Znalostní Báze</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <title>GUID Kurýr – Nezávislá komunitní nápověda</title>
+    <link rel="stylesheet" href="css/style.css?v=20261111">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="lightbox-modal" onclick="closeLightbox()"><img id="lightbox-img" src=""></div>
-
-    <div id="sub-view" class="view-screen">
-        <div class="view-header">
-            <button class="btn-back" onclick="goHome()">← Zpět</button>
-            <h2 id="sub-title" style="font-size: 1.1rem; color: var(--brand-green-bright);">Témata</h2>
-            <div style="width: 50px;"></div>
-        </div>
-        <div id="sub-list-container"></div>
-    </div>
-
-    <div id="detail-view" class="view-screen">
-        <div class="view-header">
-            <button class="btn-back" onclick="backToSub()">← Zpět</button>
-            <h2 id="detail-title" style="font-size: 1rem; color: var(--brand-green-bright);">Detail</h2>
-            <button class="btn-close" onclick="goHome()">✕</button>
-        </div>
-        <div id="detail-content"></div>
-    </div>
-
-    <div id="report-view" class="view-screen">
-        <div class="view-header">
-            <button class="btn-back" onclick="goHome()">← Zpět</button>
-            <h2 style="font-size: 1.1rem; color: var(--brand-green-bright);">💬 Nahlásit chybu</h2>
-            <div style="width: 50px;"></div>
-        </div>
-        <div class="guide-step">
-            <h4>Chybí tu něco nebo je adresa špatně?</h4>
-            <p>Napište nám bez registrace. Zpráva jde přímo administrátorovi.</p>
-            <input type="text" id="rep-name" class="input-field" placeholder="Vaše jméno nebo přezdívka">
-            <textarea id="rep-msg" class="admin-textarea" placeholder="Popište, co upravit nebo doplnit..."></textarea>
-            <button class="btn-confirm" onclick="submitReport()">📩 Odeslat hlášení</button>
-        </div>
-    </div>
-
     <div class="app-container">
         <header>
-            <div class="logo" id="main-logo" onclick="handleLogoClick()">🛒 GUID <span>Kurýr</span></div>
+            <div class="logo"><i class="fa-solid fa-cart-shopping"></i> GUID <span>Kurýr</span></div>
             <div class="header-actions">
-                <div class="theme-switch" onclick="toggleTheme()"><div class="theme-switch-handle" id="theme-icon">🌙</div></div>
+                <button class="btn-back" id="btn-return-admin" style="display:none;" onclick="location.href='admin.html'"><i class="fa-solid fa-arrow-left"></i> Zpět do Adminu</button>
+                <button class="btn-support" onclick="openSupportModal()"><i class="fa-solid fa-mug-hot"></i> Podpořit</button>
             </div>
         </header>
 
         <div class="main-content">
-            <input type="text" class="search-bar" placeholder="🔍 Hledat..." oninput="handleSearch(this.value)">
-            <div class="grid-container">
-                <div class="grid-item highlight" onclick="openSubCategory('gaia_login')">
-                    <div class="icon">📲</div><h3>Start směny & GAIA</h3><p>Fialový box, palubní deska</p>
-                </div>
-                <div class="grid-item" onclick="openSubCategory('car_home')">
-                    <div class="icon">🚗</div><h3>Auto domů</h3><p>Zapůjčení vozu přes noc</p>
-                </div>
-                <div class="grid-item" onclick="openSubCategory('shifts')">
-                    <div class="icon">📅</div><h3>Plánování směn</h3><p>120h pravidlo, Semafor</p>
-                </div>
-                <div class="grid-item" onclick="openSubCategory('invoicing')">
-                    <div class="icon">🧾</div><h3>Inkaso & Vkladomaty</h3><p>Pravidla, mapa bankomatů</p>
-                </div>
-                <div class="grid-item" onclick="openSubCategory('delivery')">
-                    <div class="icon">📦</div><h3>Doručování & Storna</h3><p>4krokový postup, RMF</p>
-                </div>
-                <div class="grid-item" onclick="openSubCategory('customer')">
-                    <div class="icon">🚪</div><h3>U zákazníka & Desatero</h3><p>18+, občanka, chování</p>
-                </div>
-                <div class="grid-item highlight" onclick="openSubCategory('bonuses')">
-                    <div class="icon">🏆</div><h3>Bonusy & Odměny</h3><p>Jak vylepšit své skóre</p>
-                </div>
-                <div class="grid-item" onclick="openSubCategory('forms')">
-                    <div class="icon">📝</div><h3>Žádosti & Formuláře</h3><p>Korekce zpoždění trasy</p>
-                </div>
-                <div class="grid-item" onclick="openSubCategory('contacts')" style="grid-column: span 2; aspect-ratio: auto; padding: 14px;">
-                    <div class="icon" style="font-size: 1.6rem;">📞</div><h3>Kde najít kontakty</h3><p>GAIA, firemní telefon, WhatsApp skupiny</p>
-                </div>
-                <div class="grid-item" onclick="openReportModal()" style="grid-column: span 2; aspect-ratio: auto; padding: 16px;">
-                    <div class="icon" style="font-size: 1.6rem;">💬</div>
-                    <h3>Nahlásit chybu / Chybí v aplikaci</h3>
-                    <p>Rychlá zpráva pro admina bez registrace</p>
-                </div>
+            <!-- Broadcast / Status oznamovatel -->
+            <div id="broadcast-banner" style="display:none; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--brand-green-bright); padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 0.85rem; color: var(--brand-green-bright);"></div>
+
+            <!-- Hlavní mřížka dlaždic -->
+            <div class="grid-container" id="main-grid"></div>
+
+            <!-- Formulář pro hlášení problému / zpětnou vazbu -->
+            <div class="guide-step" style="margin-top: 25px;">
+                <h4><i class="fa-solid fa-paper-plane"></i> Hlášení chyby nebo námětu</h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">Chybí tu něco nebo je potřeba něco upravit? Dejte vědět.</p>
+                <input type="text" id="report-name" class="input-field" placeholder="Vaše přezdívka / Jméno" style="margin-bottom: 8px;">
+                <textarea id="report-msg" class="admin-textarea" placeholder="Popište, co je potřeba upravit nebo doplnit..." style="margin-bottom: 8px; height: 70px;"></textarea>
+                <button class="btn-confirm" onclick="submitReport()"><i class="fa-solid fa-check"></i> Odeslat hlášení</button>
             </div>
+        </div>
+
+        <!-- Právní patička -->
+        <footer style="margin-top: 40px; padding: 20px 0; border-top: 1px solid var(--border-color, #1E293B); text-align: center; font-size: 0.75rem; color: var(--text-secondary);">
+            <p style="margin-bottom: 6px;">GUID Kurýr &copy; 2026 | Nezávislá komunitní platforma</p>
+            <p style="margin-bottom: 10px;">
+                <a href="#" onclick="openLegalModal(); return false;" style="color: var(--brand-green-bright); text-decoration: underline;">Právní doložka a podmínky užívání</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modální okno pro zobrazení obsahu sekce / tématu -->
+    <div id="content-modal" class="view-screen" style="display:none;">
+        <div class="view-header">
+            <button class="btn-back" onclick="closeContentModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
+            <h2 id="modal-category-title" style="font-size: 0.95rem; color: var(--brand-green-bright);"></h2>
+            <button class="btn-close" onclick="closeContentModal()">✕</button>
+        </div>
+        <div id="modal-body" style="padding: 16px; padding-bottom: 50px;"></div>
+    </div>
+
+    <!-- Modální okno: Podpora (Revolut + Airbank) -->
+    <div id="support-modal" class="view-screen" style="display:none;">
+        <div class="view-header">
+            <button class="btn-back" onclick="closeSupportModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
+            <h2 style="font-size: 0.95rem; color: var(--brand-green-bright);">Podpora vývoje aplikace</h2>
+            <button class="btn-close" onclick="closeSupportModal()">✕</button>
+        </div>
+        <div style="padding: 20px; text-align: center; max-width: 400px; margin: 0 auto;">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Pokud vám tato nápověda pomáhá a chcete podpořit její údržbu a rozvoj, můžete přispět libovolnou částkou na kávu.</p>
+            
+            <div class="guide-step" style="margin-bottom: 15px; text-align: left;">
+                <h4 style="color: var(--brand-green-bright); margin-bottom: 6px;"><i class="fa-solid fa-bolt"></i> Revolut</h4>
+                <p style="font-size: 0.8rem; margin-bottom: 8px;">Odkaz: <a href="https://revolut.me/tujtag" target="_blank" style="color: #fff; text-decoration: underline;">revolut.me/tujtag</a></p>
+                <button class="btn-confirm" style="font-size: 0.75rem; padding: 6px;" onclick="copyToClipboard('revolut.me/tujtag')"><i class="fa-solid fa-copy"></i> Kopírovat odkaz</button>
+            </div>
+
+            <div class="guide-step" style="text-align: left;">
+                <h4 style="color: var(--brand-green-bright); margin-bottom: 6px;"><i class="fa-solid fa-building-columns"></i> Airbank (QR / Účet)</h4>
+                <p style="font-size: 0.8rem; margin-bottom: 4px;">Číslo účtu: <strong>1234567890/3030</strong></p>
+                <button class="btn-confirm" style="font-size: 0.75rem; padding: 6px;" onclick="copyToClipboard('1234567890/3030')"><i class="fa-solid fa-copy"></i> Kopírovat číslo účtu</button>
+            </div>
+            
+            <button class="btn-back" style="margin-top: 25px; width: 100%;" onclick="closeSupportModal()">Zavřít okno</button>
         </div>
     </div>
 
+    <!-- Modální okno: Právní doložka -->
+    <div id="legal-modal" class="view-screen" style="display:none;">
+        <div class="view-header">
+            <button class="btn-back" onclick="closeLegalModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
+            <h2 style="font-size: 0.95rem; color: var(--brand-green-bright);">Právní doložka</h2>
+            <button class="btn-close" onclick="closeLegalModal()">✕</button>
+        </div>
+        <div style="padding: 20px; max-width: 600px; margin: 0 auto; font-size: 0.85rem; line-height: 1.6;">
+            <h3 style="color: var(--text-light); margin-top: 15px; font-size: 0.95rem;">I. Postavení a povaha portálu</h3>
+            <p>Tato internetová aplikace představuje výhradně soukromý, neoficiální a nezávislý komunitní projekt vytvořený v praxi působícími kurýry pro účely vzájemné informovanosti. Platforma není v žádném smluvním, majetkovém ani jiném autorizačním vztahu s žádnou korporací či logistickým subjektem.</p>
+            <h3 style="color: var(--text-light); margin-top: 15px; font-size: 0.95rem;">II. Vyloučení odpovědnosti (Disclaimer)</h3>
+            <p>Veškeré texty a návody mají ryze informativní charakter. Provozovatel nenese žádnou odpovědnost za správnost údajů ani za škody, sankce či pokuty vzniklé v souvislosti s používáním této platformy.</p>
+            <button class="btn-confirm" onclick="closeLegalModal()" style="margin-top: 25px; width: 100%;">Rozumím</button>
+        </div>
+    </div>
+
+    <!-- Cache buster & skripty -->
     <script>
-        let logoClicks = 0;
-        let logoTimer = null;
-        function handleLogoClick() {
-            logoClicks++;
-            clearTimeout(logoTimer);
-            if (logoClicks >= 3) {
-                logoClicks = 0;
-                window.location.href = 'admin.html';
-            } else {
-                logoTimer = setTimeout(() => {
-                    if (logoClicks < 3 && typeof goHome === 'function') {
-                        goHome();
-                    }
-                    logoClicks = 0;
-                }, 400);
-            }
-        }
+        document.write('<script src="js/data.js?v=' + Date.now() + '"><\/script>');
+        document.write('<script src="js/app.js?v=' + Date.now() + '"><\/script>');
     </script>
-    <script src="js/firebase-config.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/app.js"></script>
 </body>
 </html>
