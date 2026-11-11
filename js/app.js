@@ -30,12 +30,11 @@ function renderGrid() {
         const cat = db[key];
         if (!cat) return '';
         const style = cat.span ? 'grid-column: span 2; aspect-ratio: auto; padding: 16px;' : '';
-        const hlClass = cat.highlight ? 'highlight' : '';
         const lockIcon = cat.isSecure ? '<div style="position:absolute; top:8px; right:8px; font-size:0.75rem; color:#EF4444;"><i class="fa-solid fa-lock"></i></div>' : '';
         const iconClass = cat.icon || 'fa-folder-open';
 
         return `
-            <div class="grid-item ${hlClass}" style="${style}" onclick="openCategory('${key}')">
+            <div class="grid-item" style="${style}" onclick="openCategory('${key}')">
                 ${lockIcon}
                 <div class="icon"><i class="fa-solid ${iconClass}"></i></div>
                 <h3>${cat.title}</h3>
@@ -80,27 +79,44 @@ function openCategory(catKey) {
             `;
         }
 
-        contentHtml += cat.topics.map((top, tIdx) => `
-            <div class="accordion-item" id="acc-${tIdx}">
-                <div class="accordion-header" onclick="toggleAccordion(${tIdx})">
-                    <span>${top.name}</span>
-                    <i class="fa-solid fa-chevron-right"></i>
-                </div>
-                <div class="accordion-content">
-                    ${top.steps.map(step => `
-                        <div class="guide-step">
-                            <h4><i class="fa-solid fa-circle-chevron-right" style="font-size:0.8rem;"></i> ${step.title}</h4>
-                            <p>${formatText(step.text)}</p>
-                            ${step.images && step.images.length > 0 ? `
-                                <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
-                                    ${step.images.map(img => `<img src="${img.trim()}" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);" alt="Dokument">`).join('')}
-                                </div>
-                            ` : ''}
+        const useAccordion = cat.topics.length > 1;
+
+        contentHtml += cat.topics.map((top, tIdx) => {
+            let stepsHtml = top.steps.map(step => `
+                <div class="guide-step">
+                    <h4><i class="fa-solid fa-circle-chevron-right" style="font-size:0.8rem;"></i> ${step.title}</h4>
+                    <p>${formatText(step.text)}</p>
+                    ${step.images && step.images.length > 0 ? `
+                        <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+                            ${step.images.map(img => `<img src="${img.trim()}" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);" alt="Dokument">`).join('')}
                         </div>
-                    `).join('')}
+                    ` : ''}
                 </div>
-            </div>
-        `).join('');
+            `).join('');
+
+            if (useAccordion) {
+                // První položka (tIdx === 0) se automaticky otevře (přidáme třídu "active")
+                const activeClass = tIdx === 0 ? 'active' : '';
+                return `
+                    <div class="accordion-item ${activeClass}" id="acc-${tIdx}">
+                        <div class="accordion-header" onclick="toggleAccordion(${tIdx})">
+                            <span>${top.name}</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                        <div class="accordion-content">
+                            ${stepsHtml}
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--brand-green); font-size: 0.9rem; margin-bottom: 10px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">${top.name}</h3>
+                        ${stepsHtml}
+                    </div>
+                `;
+            }
+        }).join('');
 
         body.innerHTML = contentHtml;
     }
@@ -196,4 +212,3 @@ function submitReport() {
 window.addEventListener('DOMContentLoaded', () => {
     renderGrid();
 });
-                            
