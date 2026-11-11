@@ -2,10 +2,17 @@ let db = getSafeDb();
 let draftDb = null;
 
 function checkAdminAuth() {
-    const pass = document.getElementById('admin-pass').value;
+    const passInput = document.getElementById('admin-pass');
+    if (!passInput) return;
+    
+    const pass = passInput.value.trim();
     if (pass === 'admin123') {
-        document.getElementById('login-box').style.display = 'none';
-        document.getElementById('admin-dashboard').style.display = 'block';
+        const overlay = document.getElementById('auth-overlay');
+        const main = document.getElementById('admin-main-container');
+        
+        if (overlay) overlay.style.display = 'none';
+        if (main) main.style.display = 'block';
+        
         loadAdminData();
     } else {
         alert('❌ Nesprávné heslo!');
@@ -16,7 +23,7 @@ async function loadAdminData() {
     draftDb = JSON.parse(JSON.stringify(db));
     let stats = JSON.parse(localStorage.getItem('guid_stats') || '{}');
 
-    if (firestoreDb) {
+    if (typeof firestoreDb !== 'undefined' && firestoreDb) {
         try {
             const snap = await firestoreDb.collection("guid_stats").get();
             snap.forEach(doc => { stats[doc.id] = doc.data().views || 0; });
@@ -24,6 +31,8 @@ async function loadAdminData() {
     }
 
     const editor = document.getElementById('admin-editor');
+    if (!editor) return;
+    
     let html = '';
 
     for (let catKey in draftDb) {
@@ -54,7 +63,7 @@ async function loadAdminData() {
 
 async function loadReports() {
     let reports = JSON.parse(localStorage.getItem('guid_reports') || '[]');
-    if (firestoreDb) {
+    if (typeof firestoreDb !== 'undefined' && firestoreDb) {
         try {
             const snap = await firestoreDb.collection("guid_reports").get();
             const fbReports = [];
@@ -64,6 +73,11 @@ async function loadReports() {
     }
 
     const container = document.getElementById('admin-reports');
+    if (!container) return;
+
+    const badge = document.getElementById('reports-badge');
+    if (badge) badge.innerText = reports.length;
+
     if (reports.length === 0) {
         container.innerHTML = '<p style="color:var(--text-sub);">Zatím žádná hlášení od kurýrů.</p>';
         return;
@@ -81,6 +95,7 @@ async function loadReports() {
 }
 
 function syncDraft() {
+    if (!draftDb) return;
     for (let catKey in draftDb) {
         draftDb[catKey].topics.forEach((top, tIdx) => {
             top.steps.forEach((step, sIdx) => {
@@ -103,15 +118,17 @@ function previewDraft() {
 
 async function publishAll() {
     const btn = document.getElementById('btn-pub');
-    btn.disabled = true;
-    btn.innerText = '⏳ Publikuji...';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = '⏳ Publikuji...';
+    }
 
     try {
         syncDraft();
         db = JSON.parse(JSON.stringify(draftDb));
         localStorage.setItem('guid_db_custom', JSON.stringify(db));
 
-        if (firestoreDb) {
+        if (typeof firestoreDb !== 'undefined' && firestoreDb) {
             await firestoreDb.collection("guid_data").doc("main").set({
                 content: db,
                 updatedAt: new Date().toISOString()
@@ -123,7 +140,9 @@ async function publishAll() {
     } catch (e) {
         alert('⚠️ Chyba při publikaci. Změny zůstaly uloženy lokálně.');
     } finally {
-        btn.disabled = false;
-        btn.innerText = '🚀 Publikovat všem';
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = '🚀 Publikovat';
+        }
     }
-}
+            }
