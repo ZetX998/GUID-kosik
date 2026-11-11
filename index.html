@@ -6,6 +6,10 @@
     <title>GUID Kurýr – Komunitní nápověda</title>
     <link rel="stylesheet" href="css/style.css?v=20261111">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        const savedTheme = localStorage.getItem('guid_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -13,8 +17,9 @@
             <header>
                 <div class="logo" id="logo-clickable"><i class="fa-solid fa-cart-shopping"></i> GUID <span>Kurýr</span></div>
                 <div class="header-actions">
-                    <button class="btn-top-action" id="btn-return-admin" style="display:none;" onclick="location.href='admin.html'"><i class="fa-solid fa-arrow-left"></i> Admin</button>
-                    <button class="btn-top-action" onclick="openSupportModal()"><i class="fa-solid fa-mug-hot"></i> Podpořit</button>
+                    <button class="btn-top-action" id="btn-return-admin" style="display:none;" onclick="location.href='admin.html'"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button class="btn-top-action" onclick="toggleTheme()" title="Přepnout motiv"><i class="fa-solid fa-circle-half-stroke" id="theme-icon"></i></button>
+                    <button class="btn-top-action" onclick="openSupportModal()"><i class="fa-solid fa-mug-hot"></i></button>
                 </div>
             </header>
 
@@ -37,7 +42,6 @@
         </footer>
     </div>
 
-    <!-- Modální okno pro detail sekce -->
     <div id="content-modal" class="view-screen" style="display:none;">
         <div class="view-header">
             <button class="btn-back" onclick="closeContentModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
@@ -47,7 +51,6 @@
         <div id="modal-body" style="padding-bottom: 40px; margin-top: 10px;"></div>
     </div>
 
-    <!-- Modální okno: Podpora -->
     <div id="support-modal" class="view-screen" style="display:none;">
         <div class="view-header">
             <button class="btn-back" onclick="closeSupportModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
@@ -69,7 +72,6 @@
         </div>
     </div>
 
-    <!-- Modální okno: Právní doložka -->
     <div id="legal-modal" class="view-screen" style="display:none;">
         <div class="view-header">
             <button class="btn-back" onclick="closeLegalModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
@@ -84,8 +86,14 @@
         </div>
     </div>
 
-    <!-- Logika trojkliku na logo pro admin -->
     <script>
+        function toggleTheme() {
+            let current = document.documentElement.getAttribute('data-theme');
+            let next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('guid_theme', next);
+        }
+
         let clickCount = 0;
         let clickTimer = null;
         document.getElementById('logo-clickable').addEventListener('click', () => {
