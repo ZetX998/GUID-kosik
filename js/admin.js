@@ -1,5 +1,15 @@
-let draftDb = JSON.parse(JSON.stringify(db));
+let draftDb = null;
 let currentEditCat = null;
+
+function initAdmin() {
+    if (typeof getActiveDb === 'function') {
+        draftDb = JSON.parse(JSON.stringify(getActiveDb()));
+    } else if (typeof getSafeDb === 'function') {
+        draftDb = JSON.parse(JSON.stringify(getSafeDb()));
+    } else {
+        draftDb = {};
+    }
+}
 
 function checkAdminAuth() {
     const pass = document.getElementById('admin-pass').value.trim();
@@ -7,6 +17,7 @@ function checkAdminAuth() {
         localStorage.setItem('guid_admin_logged', 'true');
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('admin-main-container').style.display = 'block';
+        initAdmin();
         loadAdminData();
     } else {
         alert('❌ Nesprávné heslo!');
@@ -24,13 +35,14 @@ window.addEventListener('DOMContentLoaded', () => {
         const main = document.getElementById('admin-main-container');
         if(overlay) overlay.style.display = 'none';
         if(main) main.style.display = 'block';
+        initAdmin();
         loadAdminData();
     }
 });
 
 function loadAdminData() {
     const grid = document.getElementById('admin-grid');
-    if (!grid) return;
+    if (!grid || !draftDb) return;
 
     let stats = JSON.parse(localStorage.getItem('guid_stats') || '{}');
 
@@ -262,7 +274,7 @@ function previewDraft() {
 
 function publishAll() {
     saveCurrentModalInputs();
-    db = JSON.parse(JSON.stringify(draftDb));
-    localStorage.setItem('guid_db_custom', JSON.stringify(db));
+    localStorage.setItem('guid_db_custom', JSON.stringify(draftDb));
     alert('✅ Změny byly úspěšně uloženy a publikovány!');
-}
+            }
+                           
