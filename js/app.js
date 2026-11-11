@@ -49,7 +49,6 @@ function openCategory(catKey) {
     document.getElementById('modal-category-title').innerText = cat.title;
     const body = document.getElementById('modal-body');
 
-    // Pokud je sekce zabezpečená (Ceníky a smlouvy) a uživatel ještě není odemčený
     if (cat.isSecure && localStorage.getItem('guid_secure_unlocked') !== 'true') {
         body.innerHTML = `
             <div class="guide-step" style="text-align: center; padding: 25px 15px; border: 2px dashed var(--border-color);">
@@ -65,37 +64,49 @@ function openCategory(catKey) {
             </div>
         `;
     } else {
-        // Běžné zobrazení obsahu nebo odemčených dokumentů
-        let contentHtml = cat.topics.map(top => `
-            <div style="margin-bottom: 20px;">
-                <h3 style="color: var(--brand-green); font-size: 0.9rem; margin-bottom: 10px; font-weight: 700; border-bottom: 1px solid var(--border-color); padding-bottom: 4px;">${top.name}</h3>
-                ${top.steps.map(step => `
-                    <div class="guide-step">
-                        <h4><i class="fa-solid fa-circle-chevron-right" style="font-size:0.8rem;"></i> ${step.title}</h4>
-                        <p>${formatText(step.text)}</p>
-                        ${step.images && step.images.length > 0 ? `
-                            <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
-                                ${step.images.map(img => `<img src="${img.trim()}" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);" alt="Dokument">`).join('')}
-                            </div>
-                        ` : ''}
-                    </div>
-                `).join('')}
-            </div>
-        `).join('');
-
-        // Pokud jde o odemčenou zabezpečenou sekci, můžeme nahoře přidat tlačítko pro opětovné uzamčení
+        let contentHtml = '';
         if (cat.isSecure) {
-            contentHtml = `
+            contentHtml += `
                 <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
                     <button class="btn-top-action" onclick="lockSecureSection()" style="background: #FEE2E2; color: #EF4444; border-color: #FEE2E2;"><i class="fa-solid fa-lock"></i> Uzamknout zpět</button>
                 </div>
-            ` + contentHtml;
+            `;
         }
+
+        // Vykreslení otevíracích seznamů (akordeonů) pro témata
+        contentHtml += cat.topics.map((top, tIdx) => `
+            <div class="accordion-item" id="acc-${tIdx}">
+                <div class="accordion-header" onclick="toggleAccordion(${tIdx})">
+                    <span>${top.name}</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+                <div class="accordion-content">
+                    ${top.steps.map(step => `
+                        <div class="guide-step">
+                            <h4><i class="fa-solid fa-circle-chevron-right" style="font-size:0.8rem;"></i> ${step.title}</h4>
+                            <p>${formatText(step.text)}</p>
+                            ${step.images && step.images.length > 0 ? `
+                                <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+                                    ${step.images.map(img => `<img src="${img.trim()}" style="width: 100%; border-radius: 8px; border: 1px solid var(--border-color);" alt="Dokument">`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
 
         body.innerHTML = contentHtml;
     }
 
     document.getElementById('content-modal').style.display = 'block';
+}
+
+function toggleAccordion(tIdx) {
+    const el = document.getElementById(`acc-${tIdx}`);
+    if (el) {
+        el.classList.toggle('active');
+    }
 }
 
 function verifySecureAccess() {
@@ -144,6 +155,7 @@ function copyToClipboard(text) {
     });
 }
 
+// Ochrana proti spamu: report max 1x za minutu
 function submitReport() {
     const name = document.getElementById('report-name').value.trim();
     const msg = document.getElementById('report-msg').value.trim();
@@ -151,9 +163,25 @@ function submitReport() {
         alert('⚠️ Vyplňte prosím své jméno i zprávu.');
         return;
     }
+
+    let lastReportTime = localStorage.getItem('guid_last_report_time');
+    let now = Date.now();
+    if (lastReportTime && (now - lastReportTime < 60000)) {
+        let secondsLeft = Math.ceil((60000 - (now - lastReportTime)) / 1000);
+        alert(`⏳ Z bezpečnostních důvodů (anti-spam) můžete odeslat další hlášení až za ${secondsLeft} sekund.`);
+        return;
+    }
+
     let reports = JSON.parse(localStorage.getItem('guid_reports') || '[]');
-    reports.push({ name, message: msg, date: new Date().toLocaleDateString('cs-CZ') + ' ' + new Date().toLocaleTimeString('cs-CZ', {hour: '2-digit', minute:'2-digit'}) });
+    reports.push({ 
+        name, 
+        message: msg, 
+        date: new Date().toLocaleDateString('cs-CZ') + ' ' + new Date().toLocaleTimeString('cs-CZ', {hour: '2-digit', minute:'2-digit'}) 
+    });
+    
     localStorage.setItem('guid_reports', JSON.stringify(reports));
+    localStorage.setItem('guid_last_report_time', now);
+
     document.getElementById('report-name').value = '';
     document.getElementById('report-msg').value = '';
     alert('✅ Hlášení bylo úspěšně odesláno správci.');
@@ -166,3 +194,4 @@ window.addEventListener('DOMContentLoaded', () => {
         if (btn) btn.style.display = 'flex';
     }
 });
+                                       
