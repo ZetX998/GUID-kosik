@@ -54,16 +54,18 @@ function openAdminEditModal(catKey) {
 
     cat.topics.forEach((top, tIdx) => {
         html += `<h3 style="color:var(--brand-green-bright); margin:15px 0 8px 0; font-size:0.9rem;">Téma: ${top.name}</h3>`;
-        top.steps.forEach((step, sIdx) => {
-            html += `
-                <div class="guide-step">
-                    <label style="font-size:0.75rem; color:var(--text-secondary);">Název kroku:</label>
-                    <input type="text" class="input-field" id="t-${catKey}-${tIdx}-${sIdx}" value="${step.title}">
-                    <label style="font-size:0.75rem; color:var(--text-secondary);">Text návodu:</label>
-                    <textarea class="admin-textarea" id="x-${catKey}-${tIdx}-${sIdx}">${step.text}</textarea>
-                </div>
-            `;
-        });
+        if (top.steps) {
+            top.steps.forEach((step, sIdx) => {
+                html += `
+                    <div class="guide-step">
+                        <label style="font-size:0.75rem; color:var(--text-secondary);">Název kroku:</label>
+                        <input type="text" class="input-field" id="t-${catKey}-${tIdx}-${sIdx}" value="${step.title}">
+                        <label style="font-size:0.75rem; color:var(--text-secondary);">Text návodu:</label>
+                        <textarea class="admin-textarea" id="x-${catKey}-${tIdx}-${sIdx}">${step.text}</textarea>
+                    </div>
+                `;
+            });
+        }
     });
 
     body.innerHTML = html;
@@ -79,12 +81,14 @@ function closeEditModal() {
     if (currentEditCat && draftDb[currentEditCat]) {
         const cat = draftDb[currentEditCat];
         cat.topics.forEach((top, tIdx) => {
-            top.steps.forEach((step, sIdx) => {
-                const tEl = document.getElementById(`t-${currentEditCat}-${tIdx}-${sIdx}`);
-                const xEl = document.getElementById(`x-${currentEditCat}-${tIdx}-${sIdx}`);
-                if (tEl) step.title = tEl.value;
-                if (xEl) step.text = xEl.value;
-            });
+            if (top.steps) {
+                top.steps.forEach((step, sIdx) => {
+                    const tEl = document.getElementById(`t-${currentEditCat}-${tIdx}-${sIdx}`);
+                    const xEl = document.getElementById(`x-${currentEditCat}-${tIdx}-${sIdx}`);
+                    if (tEl) step.title = tEl.value;
+                    if (xEl) step.text = xEl.value;
+                });
+            }
         });
     }
     document.getElementById('edit-modal').style.display = 'none';
