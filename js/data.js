@@ -14,7 +14,7 @@ function getSafeDb() {
                 {
                     name: "2. Vyzvednutí HW u boxu",
                     steps: [
-                        { title: "Postup u boxu", text: "1. Přijdete k boxu, zvolíte možnost **„Převzít HW“** and zadáte své osobní telefonní číslo.\n2. Dorazí vám SMS s číselným kódem, který zadáte do systému boxu. Otevře se schránka (klíček, terminál a firemní telefon).\n3. Zkontrolujte, zda je vše nabité, funkční a zda je terminál správně spárovaný s telefonem. Schránku bezpečně zavřete.", images: [] }
+                        { title: "Postup u boxu", text: "1. Přijdete k boxu, zvolíte možnost **„Převzít HW“** a zadáte své osobní telefonní číslo.\n2. Dorazí vám SMS s číselným kódem, který zadáte do systému boxu. Otevře se schránka (klíček, terminál a firemní telefon).\n3. Zkontrolujte, zda je vše nabité, funkční a zda je terminál správně spárovaný s telefonem. Schránku bezpečně zavřete.", images: [] }
                     ]
                 },
                 {
@@ -108,9 +108,9 @@ function getSafeDb() {
                 {
                     name: "Přehled situací a korekcí",
                     steps: [
-                        { title: "Zpoždění ze skladu", text: "Jestliže máte náskok 0 min and sklad jde do zpoždění, nepanikařte. Na nakládku najíždějte až ve chvíli, kdy máte pod náskokem zeleně svítící parkovací místo (např. par10, par05). Na toto zpoždění se dělá **automatická korekce**, nic se neposílá.", images: [] },
-                        { title: "Poškozené / chybějící zboží na nakládce", text: "Pokud vám něco chybí nebo je poškozeno, najděte koordinátora nakládky (u televize za parkovištěm č. 5). Nahlaste mu závadu, on vám zboží vymění and nezapomeňte mu nahlásit **počet minut zpoždění** pro korekci.", images: [] },
-                        { title: "Návrat ke stornovanému zákazníkovi", text: "Pokud má zákazník slot 10:00–11:00 a vy se k němu vrátíte and odkliknete platbu do 11:00, žádost psát nemusíte. Pokud platbu odkliknete v 11:01, počítá se jako zpožděný zákazník and můžete podat žádost o korekci.", images: [] }
+                        { title: "Zpoždění ze skladu", text: "Jestliže máte náskok 0 min a sklad jde do zpoždění, nepanikařte. Na nakládku najíždějte až ve chvíli, kdy máte pod náskokem zeleně svítící parkovací místo (např. par10, par05). Na toto zpoždění se dělá **automatická korekce**, nic se neposílá.", images: [] },
+                        { title: "Poškozené / chybějící zboží na nakládce", text: "Pokud vám něco chybí nebo je poškozeno, najděte koordinátora nakládky (u televize za parkovištěm č. 5). Nahlaste mu závadu, on vám zboží vymění a nezapomeňte mu nahlásit **počet minut zpoždění** pro korekci.", images: [] },
+                        { title: "Návrat ke stornovanému zákazníkovi", text: "Pokud má zákazník slot 10:00–11:00 a vy se k němu vrátíte a odkliknete platbu do 11:00, žádost psát nemusíte. Pokud platbu odkliknete v 11:01, počítá se jako zpožděný zákazník a můžete podat žádost o korekci.", images: [] }
                     ]
                 }
             ]
@@ -129,7 +129,7 @@ function getSafeDb() {
                 {
                     name: "Kontroly RMF (Rizikoví zákazníci)",
                     steps: [
-                        { title: "Postup u RMF zákazníků", text: "RMF jsou zákazníci, kteří často reklamují. Ještě než k nim přijedete, vytáhněte jeho tašky and **nafoťte veškerý obsah tašek + jeden štítek**. Fotky pošlete teamleaderovi přes WhatsApp.\n\n<div class='alert-box'>⚠️ **Přísně tajné:** Zákazník nesmí o kontrole vědět!</div>", images: [] }
+                        { title: "Postup u RMF zákazníků", text: "RMF jsou zákazníci, kteří často reklamují. Ještě než k nim přijedete, vytáhněte jeho tašky a **nafoťte veškerý obsah tašek + jeden štítek**. Fotky pošlete teamleaderovi přes WhatsApp.\n\n<div class='alert-box'>⚠️ **Přísně tajné:** Zákazník nesmí o kontrole vědět!</div>", images: [] }
                     ]
                 }
             ]
@@ -140,9 +140,9 @@ function getSafeDb() {
             highlight: false,
             topics: [
                 {
-                    name: "Pravidla a žádosti",
+                    name: "Pravidla and žádosti",
                     steps: [
-                        { title: "1. Ponechání HW na další den", text: "Pokud máte další den směnu začínající nejpozději v **8:40** and dnes máte odpolední/celodenní směnu, můžete si nechat set HW u sebe.\n\n📱 **Kde zadat:** GAIA ➔ Menu ➔ Rychlé akce ➔ Zapůjčení auta (napište číslo terminálu and region, např. 531, Praha).", images: [] },
+                        { title: "1. Ponechání HW na další den", text: "Pokud máte další den směnu začínající nejpozději v **8:40** a dnes máte odpolední/celodenní směnu, můžete si nechat set HW u sebe.\n\n📱 **Kde zadat:** GAIA ➔ Menu ➔ Rychlé akce ➔ Zapůjčení auta (napište číslo terminálu a region, např. 531, Praha).", images: [] },
                         { title: "2. Cesta domů po posledním zákazníkovi", text: "Podmínky: schválené auto domů do 15:00, odevzdávání po 22:00, v autě žádné zboží.\n\n📱 **Postup:** GAIA ➔ Menu ➔ Rychlé akce ➔ Ostatní ➔ vybrat **Vysoká urgence** ➔ do poznámky napsat **„Domů“**.", images: [] }
                     ]
                 }
@@ -155,14 +155,12 @@ function getSafeDb() {
             span: true,
             topics: [
                 {
-                    name: "Kam volat a proč",
+                    name: "Kam volat and proč",
                     steps: [
-                        { title: "Přehled oddělení", text: "Kontakty a komunikační kanály najdete ve firemním telefonu nebo na WhatsAppu:\n\n• **HR:** Nábor, smlouvy.\n• **Fleet:** Vozový park, nehody, technika aut.\n• **Dispečink:** Operativní řešení tras, akutní problémy v terénu.\n• **Zákaznická linka:** Podpora pro komunikaci se zákazníky.", images: [] }
+                        { title: "Přehled oddělení", text: "Kontakty and komunikační kanály najdete ve firemním telefonu nebo na WhatsAppu:\n\n• **HR:** Nábor, smlouvy.\n• **Fleet:** Vozový park, nehody, technika aut.\n• **Dispečink:** Operativní řešení tras, akutní problémy v terénu.\n• **Zákaznická linka:** Podpora pro komunikaci se zákazníky.", images: [] }
                     ]
                 }
             ]
         }
     };
 }
-let db = getSafeDb();
-        
