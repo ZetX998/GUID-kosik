@@ -53,7 +53,6 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 .grid-item:hover { transform: translateY(-3px); border-color: var(--brand-green); }
 .grid-item.highlight { border-color: var(--brand-green); background: linear-gradient(135deg, var(--bg-card) 0%, var(--step-bg) 100%); }
 
-/* Moderní vzhled ikon v mřížce – čistý kruhový prvek bez složek */
 .grid-item .icon { font-size: 1.3rem; margin-bottom: 8px; color: var(--brand-green); display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(0, 160, 70, 0.1); border-radius: 12px; flex-shrink: 0; }
 .grid-item h3 { font-size: 0.82rem; margin-bottom: 3px; color: var(--text-main); font-weight: 700; line-height: 1.15; }
 .grid-item p { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
@@ -81,3 +80,4 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 
 footer { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.72rem; color: var(--text-muted); }
 footer a { color: var(--brand-green); text-decoration: underline; font-weight: 600; }
+                
