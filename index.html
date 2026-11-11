@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/style.css?v=20261111">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        const savedTheme = localStorage.getItem('guid_theme') || 'light';
+        const savedTheme = localStorage.getItem('guid_theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
 </head>
@@ -18,7 +18,7 @@
                 <div class="logo" id="logo-clickable"><i class="fa-solid fa-cart-shopping"></i> GUID <span>Kurýr</span></div>
                 <div class="header-actions">
                     <button class="btn-top-action" id="btn-return-admin" style="display:none;" onclick="location.href='admin.html'"><i class="fa-solid fa-arrow-left"></i></button>
-                    <button class="btn-top-action" onclick="toggleTheme()" title="Přepnout motiv"><i class="fa-solid fa-circle-half-stroke" id="theme-icon"></i></button>
+                    <button class="btn-top-action" onclick="toggleTheme()" title="Přepnout motiv"><i class="fa-solid fa-palette" id="theme-icon"></i></button>
                     <button class="btn-top-action" onclick="openSupportModal()"><i class="fa-solid fa-mug-hot"></i></button>
                 </div>
             </header>
@@ -38,7 +38,7 @@
 
         <footer>
             <p style="margin-bottom: 4px;">GUID Kurýr &copy; 2026 | Nezávislá komunitní platforma</p>
-            <p><a href="#" onclick="openLegalModal(); return false;">Právní doložka a podmínky užívání</a></p>
+            <p><a href="#" onclick="openLegalModal(); return false;">Právní doložka a GDPR</a></p>
         </footer>
     </div>
 
@@ -46,7 +46,7 @@
         <div class="view-header">
             <button class="btn-back" onclick="closeContentModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
             <h2 id="modal-category-title" style="font-size: 0.95rem; color: var(--brand-green); font-weight: 700; text-align: center;"></h2>
-            <button class="btn-close" onclick="closeContentModal()">✕</button>
+            <button class="btn-close" onclick="closeContentModal()" style="background:var(--step-bg); border:1px solid var(--border-color); color:var(--text-main); border-radius:8px; width:32px; height:32px; cursor:pointer;">✕</button>
         </div>
         <div id="modal-body" style="padding-bottom: 40px; margin-top: 10px;"></div>
     </div>
@@ -55,7 +55,7 @@
         <div class="view-header">
             <button class="btn-back" onclick="closeSupportModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
             <h2 style="font-size: 0.95rem; color: var(--brand-green); font-weight: 700;">Podpora vývoje aplikace</h2>
-            <button class="btn-close" onclick="closeSupportModal()">✕</button>
+            <button class="btn-close" onclick="closeSupportModal()" style="background:var(--step-bg); border:1px solid var(--border-color); color:var(--text-main); border-radius:8px; width:32px; height:32px; cursor:pointer;">✕</button>
         </div>
         <div style="padding: 10px 0; max-width: 400px; margin: 0 auto;">
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-align: center;">Pokud vám tato nápověda pomáhá, můžete přispět libovolnou částkou na kávu.</p>
@@ -64,32 +64,33 @@
                 <p style="font-size: 0.85rem; margin-bottom: 10px;">Odkaz: <a href="https://revolut.me/tujtag" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">revolut.me/tujtag</a></p>
                 <button class="btn-confirm" style="font-size: 0.8rem; padding: 8px;" onclick="copyToClipboard('revolut.me/tujtag')"><i class="fa-solid fa-copy"></i> Kopírovat odkaz</button>
             </div>
-            <div class="guide-step">
-                <h4 style="color: var(--brand-green);"><i class="fa-solid fa-building-columns"></i> Airbank</h4>
-                <p style="font-size: 0.85rem; margin-bottom: 10px;">Číslo účtu: <strong>1234567890/3030</strong></p>
-                <button class="btn-confirm" style="font-size: 0.8rem; padding: 8px;" onclick="copyToClipboard('1234567890/3030')"><i class="fa-solid fa-copy"></i> Kopírovat číslo účtu</button>
-            </div>
         </div>
     </div>
 
     <div id="legal-modal" class="view-screen" style="display:none;">
         <div class="view-header">
             <button class="btn-back" onclick="closeLegalModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
-            <h2 style="font-size: 0.95rem; color: var(--brand-green); font-weight: 700;">Právní doložka</h2>
-            <button class="btn-close" onclick="closeLegalModal()">✕</button>
+            <h2 style="font-size: 0.95rem; color: var(--brand-green); font-weight: 700;">Právní doložka a ochrana dat</h2>
+            <button class="btn-close" onclick="closeLegalModal()" style="background:var(--step-bg); border:1px solid var(--border-color); color:var(--text-main); border-radius:8px; width:32px; height:32px; cursor:pointer;">✕</button>
         </div>
-        <div style="padding: 10px 0; max-width: 600px; margin: 0 auto; font-size: 0.85rem; line-height: 1.6;">
-            <h4 style="color: var(--text-main); margin-top: 10px; font-size: 0.9rem;">I. Postavení a povaha portálu</h4>
-            <p>Tato aplikace je výhradně soukromým, neoficiálním a nezávislým komunitním projektem pro kurýry.</p>
-            <h4 style="color: var(--text-main); margin-top: 15px; font-size: 0.9rem;">II. Vyloučení odpovědnosti</h4>
-            <p>Veškeré texty mají informativní charakter. Provozovatel nenese odpovědnost za sankce či pokuty.</p>
+        <div style="padding: 10px 0; max-width: 600px; margin: 0 auto; font-size: 0.83rem; line-height: 1.6;">
+            <h4 style="color: var(--brand-green); margin-top: 10px; font-size: 0.9rem;">I. Preambule a povaha portálu</h4>
+            <p>Tento dokument stanovuje závazné podmínky užívání nezávislé komunitní aplikace „GUID Kurýr“. Projekt slouží výhradně jako informativní a asistenční nástroj pro optimalizaci pracovních postupů v oblasti kurýrních služeb.</p>
+            <h4 style="color: var(--brand-green); margin-top: 15px; font-size: 0.9rem;">II. Ochrana osobních údajů a GDPR</h4>
+            <p>Aplikace neshromažďuje, nezpracovává ani neuchovává žádné citlivé osobní údaje ve smyslu nařízení Evropského parlamentu a Rady (EU) 2016/679 (GDPR). Veškerá data týkající se statistik použití či uživatelských hlášení jsou uložena lokálně v paměti koncového zařízení uživatele (localStorage) bez přenosu na externí komerční databázové servery třetích stran.</p>
+            <h4 style="color: var(--brand-green); margin-top: 15px; font-size: 0.9rem;">III. Vyloučení odpovědnosti (Disclaimer)</h4>
+            <p>Provozovatel tohoto softwaru nenese žádnou přímou či nepřímou právní ani finanční odpovědnost za případné sankce, pokuty, manka, provozní nedorozumění nebo pracovněprávní postihy vzniklé při výkonu kurýrní činnosti. Doporučení uvedená v aplikaci mají doporučující charakter a nenahrazují závazné interní směrnice zaměstnavatele či smluvního partnera.</p>
         </div>
     </div>
 
     <script>
         function toggleTheme() {
             let current = document.documentElement.getAttribute('data-theme');
-            let next = current === 'dark' ? 'light' : 'dark';
+            let next = 'dark';
+            if (current === 'dark') next = 'cyber';
+            else if (current === 'cyber') next = 'light';
+            else next = 'dark';
+            
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('guid_theme', next);
         }
@@ -99,14 +100,7 @@
         document.getElementById('logo-clickable').addEventListener('click', () => {
             clickCount++;
             if (clickCount === 1) {
-                clickTimer = setTimeout(() => {
-                    if (clickCount < 3) {
-                        closeContentModal();
-                        if(typeof closeSupportModal === 'function') closeSupportModal();
-                        if(typeof closeLegalModal === 'function') closeLegalModal();
-                    }
-                    clickCount = 0;
-                }, 400);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 400);
             } else if (clickCount === 3) {
                 clearTimeout(clickTimer);
                 clickCount = 0;
