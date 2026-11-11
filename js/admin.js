@@ -1,5 +1,14 @@
+const ADMIN_PASSWORD_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
+
 let draftDb = null;
 let currentEditCat = null;
+
+async function sha256Admin(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 function initAdmin() {
     if (typeof getActiveDb === 'function') {
@@ -11,9 +20,13 @@ function initAdmin() {
     }
 }
 
-function checkAdminAuth() {
-    const pass = document.getElementById('admin-pass').value.trim();
-    if (pass === 'admin123') {
+async function checkAdminAuth() {
+    const passInput = document.getElementById('admin-pass');
+    if (!passInput) return;
+
+    const typedHash = await sha256Admin(passInput.value.trim());
+
+    if (typedHash === ADMIN_PASSWORD_HASH) {
         localStorage.setItem('guid_admin_logged', 'true');
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('admin-main-container').style.display = 'block';
@@ -21,6 +34,7 @@ function checkAdminAuth() {
         loadAdminData();
     } else {
         alert('❌ Nesprávné heslo!');
+        passInput.value = '';
     }
 }
 
@@ -97,7 +111,7 @@ function renderEditForm() {
             <div class="guide-step" style="border-left: 4px solid var(--brand-green); margin-bottom: 16px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;">
                     <div style="flex-grow:1;">
-                        <label style="font-size:0.7rem; color:var(--text-muted);">Název téma:</label>
+                        <label style="font-size:0.7rem; color:var(--text-muted);">Název tématu:</label>
                         <input type="text" class="input-field" style="font-weight:700; margin-top:2px;" id="topic-name-${tIdx}" value="${top.name}" oninput="updateTopicName(${tIdx})">
                     </div>
                     <button class="btn-top-action" style="background:#FEE2E2; color:#EF4444; border-color:#FEE2E2; margin-top:16px;" onclick="removeTopic(${tIdx})"><i class="fa-solid fa-trash"></i> Smazat téma</button>
@@ -114,7 +128,7 @@ function renderEditForm() {
                         <label style="font-size:0.75rem; color:var(--text-muted); margin-top:8px; display:block;">Text návodu (podporuje **tučně**, HTML tagy jako &lt;div class='alert-box'&gt; pro výstrahy):</label>
                         <textarea class="admin-textarea" id="x-${currentEditCat}-${tIdx}-${sIdx}">${step.text}</textarea>
 
-                        <label style="font-size:0.75rem; color:var(--text-muted); margin-top:8px; display:block;">Obrázky / Fotky (URL odkaz oddělené čárkou):</label>
+                        <label style="font-size:0.75rem; color:var(--text-muted); margin-top:8px; display:block;">Obrázky / Fotky (URL odkazy oddělené čárkou):</label>
                         <input type="text" class="input-field" id="img-${currentEditCat}-${tIdx}-${sIdx}" value="${(step.images || []).join(', ')}" placeholder="https://priklad.cz/foto.jpg">
 
                         <div style="display:flex; justify-content:flex-end; margin-top:8px;">
@@ -276,5 +290,4 @@ function publishAll() {
     saveCurrentModalInputs();
     localStorage.setItem('guid_db_custom', JSON.stringify(draftDb));
     alert('✅ Změny byly úspěšně uloženy a publikovány!');
-            }
-                           
+}
