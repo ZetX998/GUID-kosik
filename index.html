@@ -46,7 +46,7 @@
 
     <div class="app-container">
         <header>
-            <div class="logo" onclick="goHome()">🛒 GUID <span>Kurýr</span></div>
+            <div class="logo" id="main-logo" onclick="handleLogoClick()">🛒 GUID <span>Kurýr</span></div>
             <div class="header-actions">
                 <div class="theme-switch" onclick="toggleTheme()"><div class="theme-switch-handle" id="theme-icon">🌙</div></div>
             </div>
@@ -91,6 +91,25 @@
         </div>
     </div>
 
+    <script>
+        let logoClicks = 0;
+        let logoTimer = null;
+        function handleLogoClick() {
+            logoClicks++;
+            clearTimeout(logoTimer);
+            if (logoClicks >= 3) {
+                logoClicks = 0;
+                window.location.href = 'admin.html';
+            } else {
+                logoTimer = setTimeout(() => {
+                    if (logoClicks < 3 && typeof goHome === 'function') {
+                        goHome();
+                    }
+                    logoClicks = 0;
+                }, 400);
+            }
+        }
+    </script>
     <script src="js/firebase-config.js"></script>
     <script src="js/data.js"></script>
     <script src="js/i18n.js"></script>
