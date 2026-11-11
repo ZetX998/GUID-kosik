@@ -95,7 +95,7 @@ function renderEditForm() {
         if (top.steps) {
             top.steps.forEach((step, sIdx) => {
                 html += `
-                    <div style="background:#FFFFFF; padding:12px; border-radius:10px; border:1px solid var(--border-color); margin-top:10px;">
+                    <div style="background:var(--bg-card); padding:12px; border-radius:10px; border:1px solid var(--border-color); margin-top:10px;">
                         <label style="font-size:0.75rem; color:var(--text-muted);">Nadpis kroku:</label>
                         <input type="text" class="input-field" id="t-${currentEditCat}-${tIdx}-${sIdx}" value="${step.title}">
                         
@@ -114,7 +114,7 @@ function renderEditForm() {
         }
 
         html += `
-                <button class="btn-confirm" style="font-size:0.78rem; padding:8px; margin-top:12px; background:#F1F5F9; color:var(--text-main); box-shadow:none; border:1px solid var(--border-color);" onclick="addStep(${tIdx})"><i class="fa-solid fa-plus"></i> Přidat krok k tomuto tématu</button>
+                <button class="btn-confirm" style="font-size:0.78rem; padding:8px; margin-top:12px; background:var(--step-bg); color:var(--text-main); box-shadow:none; border:1px solid var(--border-color);" onclick="addStep(${tIdx})"><i class="fa-solid fa-plus"></i> Přidat krok k tomuto tématu</button>
             </div>
         `;
     });
@@ -236,7 +236,7 @@ function loadReports() {
     }
 
     container.innerHTML = reports.map((r, idx) => `
-        <div class="report-card" style="background:#F8FAFC; border:1px solid var(--border-color); padding:10px; border-radius:8px; margin-bottom:8px;">
+        <div class="report-card" style="background:var(--step-bg); border:1px solid var(--border-color); padding:10px; border-radius:8px; margin-bottom:8px;">
             <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--brand-green); font-weight:bold; margin-bottom:4px;">
                 <span>👤 ${r.name}</span>
                 <span>${r.date}</span>
