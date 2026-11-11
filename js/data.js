@@ -56,7 +56,7 @@ function getSafeDb() {
             ]
         },
         "vratne_obaly": {
-            title: "Stravenky & Vratné obaly",
+            title: "Stravenky & Obaly",
             icon: "fa-ticket",
             highlight: false,
             topics: [
@@ -90,7 +90,7 @@ function getSafeDb() {
             ]
         },
         "bonus_tips": {
-            title: "Jak vylepšit bonusy",
+            title: "Bonusy & Jak je vylepšit",
             icon: "fa-trophy",
             highlight: true,
             topics: [
@@ -105,7 +105,7 @@ function getSafeDb() {
             ]
         },
         "corrections": {
-            title: "Žádosti o korekce",
+            title: "Žádosti & Korekce",
             icon: "fa-file-pen",
             highlight: false,
             topics: [
@@ -139,7 +139,7 @@ function getSafeDb() {
             ]
         },
         "car_home": {
-            title: "Auto domů & Výpůjčka",
+            title: "Auto domů",
             icon: "fa-car",
             highlight: false,
             topics: [
@@ -153,7 +153,7 @@ function getSafeDb() {
             ]
         },
         "contacts": {
-            title: "Důležité kontakty",
+            title: "Kde najít kontakty",
             icon: "fa-phone",
             highlight: false,
             span: true,
@@ -169,4 +169,3 @@ function getSafeDb() {
     };
 }
 let db = getSafeDb();
-        
