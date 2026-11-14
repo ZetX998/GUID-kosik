@@ -23,20 +23,25 @@
             </header>
 
             <div class="main-content">
+                <div style="margin-bottom: 12px; position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.8rem;"></i>
+                    <input type="text" id="search-input" class="input-field" placeholder="Rychlé hledání v nápovědě..." oninput="filterGrid(this.value)" style="padding-left: 34px; margin-top: 0;">
+                </div>
+
                 <div class="grid-container" id="main-grid"></div>
 
-                <div class="guide-step" style="margin-top: 20px;">
+                <div class="guide-step" style="margin-top: 16px;">
                     <h4 style="text-align: center; justify-content: center;"><i class="fa-solid fa-paper-plane"></i> Hlášení chyby nebo námětu</h4>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 10px;">Chybí tu něco nebo je potřeba něco upravit?</p>
-                    <input type="text" id="report-name" class="input-field" placeholder="Vaše přezdívka / Jméno" style="margin-bottom: 8px;">
-                    <textarea id="report-msg" class="admin-textarea" placeholder="Popište, co je potřeba upravit..." style="margin-bottom: 10px; height: 65px;"></textarea>
+                    <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 8px;">Chybí tu něco nebo je potřeba něco upravit?</p>
+                    <input type="text" id="report-name" class="input-field" placeholder="Vaše přezdívka / Jméno" style="margin-bottom: 6px;">
+                    <textarea id="report-msg" class="admin-textarea" placeholder="Popište, co je potřeba upravit..." style="margin-bottom: 8px; height: 55px;"></textarea>
                     <button class="btn-confirm" onclick="submitReport()"><i class="fa-solid fa-check"></i> Odeslat hlášení</button>
                 </div>
             </div>
         </div>
 
         <footer>
-            <p style="margin-bottom: 4px;">GUID Kurýr &copy; 2026 | Nezávislá komunitní platforma</p>
+            <p style="margin-bottom: 2px;">GUID Kurýr &copy; 2026 | Nezávislá komunitní platforma</p>
             <p><a href="#" onclick="openLegalModal(); return false;">Právní doložka a GDPR</a></p>
         </footer>
     </div>
@@ -44,24 +49,24 @@
     <div id="content-modal" class="view-screen" style="display:none;">
         <div class="view-header">
             <button class="btn-back" onclick="closeContentModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
-            <h2 id="modal-category-title" style="font-size: 0.95rem; color: var(--brand-green); font-weight: 700; text-align: center;"></h2>
-            <button class="btn-close" onclick="closeContentModal()" style="background:var(--step-bg); border:1px solid var(--border-color); color:var(--text-main); border-radius:8px; width:32px; height:32px; cursor:pointer;">✕</button>
+            <h2 id="modal-category-title" style="font-size: 0.9rem; color: var(--brand-green); font-weight: 700; text-align: center;"></h2>
+            <button class="btn-close" onclick="closeContentModal()">✕</button>
         </div>
-        <div id="modal-body" style="padding-bottom: 40px; margin-top: 10px;"></div>
+        <div id="modal-body" style="padding-bottom: 30px; margin-top: 8px;"></div>
     </div>
 
     <div id="support-modal" class="view-screen" style="display:none;">
         <div class="view-header">
             <button class="btn-back" onclick="closeSupportModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
-            <h2 style="font-size: 0.95rem; color: var(--brand-green); font-weight: 700;">Podpora vývoje aplikace</h2>
-            <button class="btn-close" onclick="closeSupportModal()" style="background:var(--step-bg); border:1px solid var(--border-color); color:var(--text-main); border-radius:8px; width:32px; height:32px; cursor:pointer;">✕</button>
+            <h2 style="font-size: 0.9rem; color: var(--brand-green); font-weight: 700;">Podpora vývoje aplikace</h2>
+            <button class="btn-close" onclick="closeSupportModal()">✕</button>
         </div>
         <div style="padding: 10px 0; max-width: 400px; margin: 0 auto;">
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-align: center;">Pokud vám tato nápověda pomáhá, můžete přispět libovolnou částkou na kávu.</p>
-            <div class="guide-step" style="margin-bottom: 15px;">
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; text-align: center;">Pokud vám tato nápověda pomáhá, můžete přispět libovolnou částkou na kávu.</p>
+            <div class="guide-step" style="margin-bottom: 12px;">
                 <h4 style="color: var(--brand-green);"><i class="fa-solid fa-bolt"></i> Revolut</h4>
-                <p style="font-size: 0.85rem; margin-bottom: 10px;">Odkaz: <a href="https://revolut.me/tujtag" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">revolut.me/tujtag</a></p>
-                <button class="btn-confirm" style="font-size: 0.8rem; padding: 8px;" onclick="copyToClipboard('revolut.me/tujtag')"><i class="fa-solid fa-copy"></i> Kopírovat odkaz</button>
+                <p style="font-size: 0.8rem; margin-bottom: 8px;">Odkaz: <a href="https://revolut.me/tujtag" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">revolut.me/tujtag</a></p>
+                <button class="btn-confirm" style="font-size: 0.78rem; padding: 6px;" onclick="copyToClipboard('revolut.me/tujtag')"><i class="fa-solid fa-copy"></i> Kopírovat odkaz</button>
             </div>
         </div>
     </div>
@@ -69,15 +74,15 @@
     <div id="legal-modal" class="view-screen" style="display:none;">
         <div class="view-header">
             <button class="btn-back" onclick="closeLegalModal()"><i class="fa-solid fa-arrow-left"></i> Zpět</button>
-            <h2 style="font-size: 0.95rem; color: var(--brand-green); font-weight: 700;">Právní doložka a ochrana dat</h2>
-            <button class="btn-close" onclick="closeLegalModal()" style="background:var(--step-bg); border:1px solid var(--border-color); color:var(--text-main); border-radius:8px; width:32px; height:32px; cursor:pointer;">✕</button>
+            <h2 style="font-size: 0.9rem; color: var(--brand-green); font-weight: 700;">Právní doložka a ochrana dat</h2>
+            <button class="btn-close" onclick="closeLegalModal()">✕</button>
         </div>
-        <div style="padding: 10px 0; max-width: 600px; margin: 0 auto; font-size: 0.83rem; line-height: 1.6;">
-            <h4 style="color: var(--brand-green); margin-top: 10px; font-size: 0.9rem;">I. Preambule a povaha portálu</h4>
+        <div style="padding: 10px 0; max-width: 600px; margin: 0 auto; font-size: 0.8rem; line-height: 1.5;">
+            <h4 style="color: var(--brand-green); margin-top: 8px; font-size: 0.85rem;">I. Preambule a povaha portálu</h4>
             <p>Tento dokument stanovuje závazné podmínky užívání nezávislé komunitní aplikace „GUID Kurýr“. Projekt slouží výhradně jako informativní a asistenční nástroj pro optimalizaci pracovních postupů v oblasti kurýrních služeb.</p>
-            <h4 style="color: var(--brand-green); margin-top: 15px; font-size: 0.9rem;">II. Ochrana osobních údajů a GDPR</h4>
+            <h4 style="color: var(--brand-green); margin-top: 12px; font-size: 0.85rem;">II. Ochrana osobních údajů a GDPR</h4>
             <p>Aplikace neshromažďuje, nezpracovává ani neuchovává žádné citlivé osobní údaje ve smyslu nařízení Evropského parlamentu a Rady (EU) 2016/679 (GDPR). Veškerá data týkající se statistik použití či uživatelských hlášení jsou uložena lokálně v paměti koncového zařízení uživatele (localStorage) bez přenosu na externí komerční databázové servery třetích stran.</p>
-            <h4 style="color: var(--brand-green); margin-top: 15px; font-size: 0.9rem;">III. Vyloučení odpovědnosti (Disclaimer)</h4>
+            <h4 style="color: var(--brand-green); margin-top: 12px; font-size: 0.85rem;">III. Vyloučení odpovědnosti (Disclaimer)</h4>
             <p>Provozovatel tohoto softwaru nenese žádnou přímou či nepřímou právní ani finanční odpovědnost za případné sankce, pokuty, manka, provozní nedorozumění nebo pracovněprávní postihy vzniklé při výkonu kurýrní činnosti. Doporučení uvedená v aplikaci mají doporučující charakter a nenahrazují závazné interní směrnice zaměstnavatele či smluvního partnera.</p>
         </div>
     </div>
@@ -112,4 +117,5 @@
         document.write('<script src="js/app.js?v=' + Date.now() + '"><\/script>');
     </script>
 </body>
-</html>
+            </html>
+            
