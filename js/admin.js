@@ -288,5 +288,5 @@ function publishAll() {
     saveCurrentModalInputs();
     localStorage.setItem('guid_db_custom', JSON.stringify(draftDb));
     alert('✅ Změny byly úspěšně uloženy a publikovány!');
-}
-    
+                    }
+                                             
